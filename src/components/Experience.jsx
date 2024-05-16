@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Html, OrbitControls } from "@react-three/drei";
 import skmeans from "skmeans";
+import { Girl } from "./Girl";
+
+import { Color } from "three";
+import { useFrame } from "@react-three/fiber";
 
 export const Experience = () => {
   const [data, setData] = useState([]);
@@ -30,53 +34,87 @@ export const Experience = () => {
     setCentroidsInput(event.target.value);
   };
 
+  const colorRef = useRef(new Color("#ececec"));
+  const [color, setColor] = useState("#ececec");
+  const targetColorRef = useRef(
+    new Color(Math.random(), Math.random(), Math.random())
+  );
+
+  useFrame(() => {
+    colorRef.current.lerp(targetColorRef.current, 0.01);
+    setColor(`#${colorRef.current.getHexString()}`);
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      targetColorRef.current.set(Math.random(), Math.random(), Math.random());
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
+      <color attach="background" args={[color]} />
+
       <OrbitControls />
-      <Html transform position={[0, 0, -8]}>
-        <div
-          style={{
-            color: "black",
-            backgroundColor: "white",
-            padding: "10px",
-            borderRadius: "5px",
-          }}
-        >
-          <h1>Kmeans</h1>
-          <input
-            type="text"
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Entrer les données séparées par des virgules"
-            style={{ margin: "10px 0", padding: "5px", width: "300px" }}
-          />
-          <input
-            type="text"
-            value={centroidsInput}
-            onChange={handleCentroidsInputChange}
-            placeholder="Entrer les centroïdes séparés par des virgules"
-            style={{ margin: "10px 0", padding: "5px", width: "300px" }}
-          />
-          <button
-            onClick={handleDataSubmit}
+      <Girl position={[0, -5, 45]} scale={0.15} rotation={[0, Math.PI, 0]} />
+      <group scale={[0.1, 0.1, 0.1]} position={[0, 0.25, 0]}>
+        <Html transform center occlude>
+          <div
             style={{
-              padding: "5px 10px",
-              backgroundColor: "blue",
-              color: "white",
-              border: "none",
+              color: "black",
+              backgroundColor: "white",
+              padding: "10px",
               borderRadius: "5px",
             }}
           >
-            Submit
-          </button>
-        </div>
-      </Html>
-      <Html transform position={[0, -5, -5]}>
-        <h1>Centroides</h1>
-        <div style={{ color: "black" }}>
-          {result && result.centroids.map((d, i) => <p key={i}>{d}</p>)}
-        </div>
-      </Html>
+            <h1>Kmeans</h1>
+            <input
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Entrer les données séparées par des virgules"
+              style={{ margin: "10px 0", padding: "5px", width: "300px" }}
+            />
+            <input
+              type="text"
+              value={centroidsInput}
+              onChange={handleCentroidsInputChange}
+              placeholder="Entrer les centroïdes séparés par des virgules"
+              style={{ margin: "10px 0", padding: "5px", width: "300px" }}
+            />
+            <button
+              onClick={handleDataSubmit}
+              style={{
+                padding: "5px 10px",
+                backgroundColor: "blue",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        </Html>
+      </group>
+      <group position={[0, -0.25, 0]} scale={0.1}>
+        <Html transform>
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "10px",
+              borderRadius: "5px",
+            }}
+          >
+            <h1>Centroides</h1>
+            <div style={{ color: "black" }}>
+              {result && result.centroids.map((d, i) => <p key={i}>{d}</p>)}
+            </div>
+          </div>
+        </Html>
+      </group>
     </>
   );
 };
