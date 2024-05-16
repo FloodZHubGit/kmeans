@@ -1,13 +1,12 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Text } from "@react-three/drei";
 
 export const Experience = () => {
   return (
     <>
       <OrbitControls />
-      <mesh>
-        <boxGeometry />
-        <meshNormalMaterial />
-      </mesh>
+      <Text font={"/fonts/Inter-Black.woff"} color={"black"}>
+        Kmeans
+      </Text>
     </>
   );
 };

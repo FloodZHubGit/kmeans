@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <ARButton />
-      <Canvas shadows camera={{ position: [3, 3, 3], fov: 30 }}>
+      <Canvas shadows camera={{ position: [0, 0, 7], fov: 30 }}>
         <XR>
           <color attach="background" args={["#ececec"]} />
           <Experience />
