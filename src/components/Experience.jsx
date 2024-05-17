@@ -58,7 +58,6 @@ export const Experience = () => {
       <color attach="background" args={[color]} />
 
       <OrbitControls />
-      <Girl position={[0, -5, 45]} scale={0.15} rotation={[0, Math.PI, 0]} />
       <group scale={[0.1, 0.1, 0.1]} position={[0, 0.25, 0]}>
         <Html transform center occlude>
           <div
