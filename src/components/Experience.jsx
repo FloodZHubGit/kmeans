@@ -112,6 +112,10 @@ export const Experience = () => {
             <div style={{ color: "black" }}>
               {result && result.centroids.map((d, i) => <p key={i}>{d}</p>)}
             </div>
+            <h1>Affectations</h1>
+            <div style={{ color: "black" }}>
+              {result && result.idxs.join(", ")}
+            </div>
           </div>
         </Html>
       </group>
